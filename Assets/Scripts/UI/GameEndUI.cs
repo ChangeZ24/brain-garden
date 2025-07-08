@@ -30,7 +30,7 @@ public class GameEndUI : MonoBehaviour
     {
         nextBtn.onClick.AddListener(() =>
         {
-            //Ôİ¶¨backtoMenu
+            //æš‚å®šbacktoMenu
             SceneManager.LoadScene(0);
         });
 
@@ -49,9 +49,9 @@ public class GameEndUI : MonoBehaviour
 
         replay1Btn.onClick.AddListener(() =>
         {
-            //ÖØĞÂ¿ªÊ¼
-            //½«PlayerÖØÖÃµ½Æğµã£¬ÖØÖÃ³¯ÏòµÈµÈ
-            //ÖØÖÃÊ±¼ä
+            //é‡æ–°å¼€å§‹
+            //å°†Playeré‡ç½®åˆ°èµ·ç‚¹ï¼Œé‡ç½®æœå‘ç­‰ç­‰
+            //é‡ç½®æ—¶é—´
             MapRender.instance.GameStart();
             ResetThisUIAll();
         });
@@ -69,26 +69,26 @@ public class GameEndUI : MonoBehaviour
 
 
     /// <summary>
-    /// target´ú±í¼¤»îÄÄÒ»¸öUI£¬0Îª¿ªĞÄ£¬1ÎªÒ»°ã£¬2ÎªÉËĞÄ
+    /// targetä»£è¡¨æ¿€æ´»å“ªä¸€ä¸ªUIï¼Œ0ä¸ºå¼€å¿ƒï¼Œ1ä¸ºä¸€èˆ¬ï¼Œ2ä¸ºä¼¤å¿ƒ
     /// </summary>
     /// <param name="target"></param>
     public void SetTargetUIActive(int target)
     {
         blackBG.gameObject.SetActive(true);
-        //ÆôÓÃÏÔÊ¾²¢¼¤»î
+        //å¯ç”¨æ˜¾ç¤ºå¹¶æ¿€æ´»
         if(target==0)
         {
-            //¼¤»î¿ªĞÄµÄUI
+            //æ¿€æ´»å¼€å¿ƒçš„UI
             happyUI.SetActive(true);
         }
         else if (target == 1)
         {
-            //¼¤»îÒ»°ãµÄUI
+            //æ¿€æ´»ä¸€èˆ¬çš„UI
             calmUI.SetActive(true);
         }
         else if (target == 2)
         {
-            //¼¤»îÉËĞÄµÄUI
+            //æ¿€æ´»ä¼¤å¿ƒçš„UI
             sadUI.SetActive(true);
         }
     }
@@ -96,7 +96,7 @@ public class GameEndUI : MonoBehaviour
     {
         //Debug.Log("fucnt");
         blackBG.gameObject.SetActive(false);
-        //Èı¸ö²»Í¬½áËãUIÊ§»î
+        //ä¸‰ä¸ªä¸åŒç»“ç®—UIå¤±æ´»
         happyUI.gameObject.SetActive(false);
         //Debug.Log(calmUI == null);
         calmUI.gameObject.SetActive(false);

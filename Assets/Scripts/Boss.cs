@@ -30,7 +30,7 @@ public class Boss : MonoBehaviour
     {
         drawRadius = 0.5f;
         jumpHeight = 1f;
-        //¹ì¼£äÖÈ¾²ÎÊı
+        //è½¨è¿¹æ¸²æŸ“å‚æ•°
         //lineRenderer = this.transform.GetComponent<LineRenderer>();
         lineRenderer = MapRender.instance.bossMoveLineRenderer;
         lineRenderer.startWidth = drawRadius;
@@ -48,7 +48,7 @@ public class Boss : MonoBehaviour
 
     //baseInfo
 
-    public int bossState;//boss×´Ì¬£¬0¾²Ö¹£¬1ÒÆ¶¯£¬2¼¼ÄÜ£¬3ÌøÔ¾
+    public int bossState;//bossçŠ¶æ€ï¼Œ0é™æ­¢ï¼Œ1ç§»åŠ¨ï¼Œ2æŠ€èƒ½ï¼Œ3è·³è·ƒ
     public Animator playerAnimator;
 
     //otherInfo
@@ -58,7 +58,7 @@ public class Boss : MonoBehaviour
     private IEnumerator bossJump_ie;
     public void Skill01()
     {
-        //ÇĞ»»×´Ì¬µ½ÌøÔ¾×´Ì¬
+        //åˆ‡æ¢çŠ¶æ€åˆ°è·³è·ƒçŠ¶æ€
         if (bossState == 3)
             return;
         bossState =3;
@@ -67,18 +67,18 @@ public class Boss : MonoBehaviour
     }
 
     public float timeForPrepareJumping;
-    private float jumpHeight;   //yÖáÌøÔ¾Æ«ÒÆ
-    private float jumpHeightProgressCounter;//ÌøÔ¾¹ı³Ì¼ÆÊ±,1s´ïµ½Ä¿±êµã
+    private float jumpHeight;   //yè½´è·³è·ƒåç§»
+    private float jumpHeightProgressCounter;//è·³è·ƒè¿‡ç¨‹è®¡æ—¶,1sè¾¾åˆ°ç›®æ ‡ç‚¹
     private IEnumerator BossJump()
     {
         //
         yield return new WaitForSeconds(timeForPrepareJumping);
-        //Öğ½¥Ô¾Æğµ½Ä¿±ê¸ß¶ÈÎ»ÖÃ
+        //é€æ¸è·ƒèµ·åˆ°ç›®æ ‡é«˜åº¦ä½ç½®
         playerAnimator.SetTrigger("JumpUp");
-        Vector3 startPos = this.transform.position;//´æ´¢ÆğÌøµã
-        Vector3 targetPos = playerTransform.position;//´æ´¢ÆğÌøÄ¿±êµã
-        Vector3 distanceVec = targetPos - startPos;//Á½Õß¾àÀëÓë·½Ïò
-        //ÆğÌø£¬1sºó´ïµ½ ¾àÀë/2 +yÖáÆ«ÒÆ
+        Vector3 startPos = this.transform.position;//å­˜å‚¨èµ·è·³ç‚¹
+        Vector3 targetPos = playerTransform.position;//å­˜å‚¨èµ·è·³ç›®æ ‡ç‚¹
+        Vector3 distanceVec = targetPos - startPos;//ä¸¤è€…è·ç¦»ä¸æ–¹å‘
+        //èµ·è·³ï¼Œ1såè¾¾åˆ° è·ç¦»/2 +yè½´åç§»
         while (jumpHeightProgressCounter <= 1)
         {
             jumpHeightProgressCounter += Time.fixedDeltaTime;
@@ -89,11 +89,11 @@ public class Boss : MonoBehaviour
             yield return null;
         }
 
-        //¿ÉÒÔÔÚÕâÀïÖØĞÂ»ñÈ¡Íæ¼ÒÎ»ÖÃ
+        //å¯ä»¥åœ¨è¿™é‡Œé‡æ–°è·å–ç©å®¶ä½ç½®
         playerAnimator.SetTrigger("JumpDown");
-        //ÌøÔ¾µ½×î¸ßµã£¬ÏÂÂä
-        jumpHeightProgressCounter = 0;//¿ªÊ¼
-        startPos = this.transform.position;//»ñÈ¡ÔÚ¿ÕÖĞµÄ¿ªÊ¼ÏÂÂäÎ»ÖÃ
+        //è·³è·ƒåˆ°æœ€é«˜ç‚¹ï¼Œä¸‹è½
+        jumpHeightProgressCounter = 0;//å¼€å§‹
+        startPos = this.transform.position;//è·å–åœ¨ç©ºä¸­çš„å¼€å§‹ä¸‹è½ä½ç½®
         while (jumpHeightProgressCounter <= 1)
         {
             jumpHeightProgressCounter += Time.fixedDeltaTime;
@@ -103,20 +103,20 @@ public class Boss : MonoBehaviour
                 jumpHeightProgressCounter);
             yield return null;
         }
-        //ÂäµØÊ±½øĞĞÒ»´Î¼ì²â£¬¼ì²â¸½½üÊÇ·ñÓĞÍæ¼Ò£¬»òÕßÖ±½ÓÓÃÅö×²ÌåÅö×²¼ì²â
+        //è½åœ°æ—¶è¿›è¡Œä¸€æ¬¡æ£€æµ‹ï¼Œæ£€æµ‹é™„è¿‘æ˜¯å¦æœ‰ç©å®¶ï¼Œæˆ–è€…ç›´æ¥ç”¨ç¢°æ’ä½“ç¢°æ’æ£€æµ‹
         //
         playerAnimator.SetTrigger("JumpEnd");
-        //ÖØÖÃ²ÎÊı
+        //é‡ç½®å‚æ•°
         StopCoroutine(bossJump_ie);
         jumpHeightProgressCounter = 0;
-        //×´Ì¬ÍË»Øµ½¾²Ö¹
+        //çŠ¶æ€é€€å›åˆ°é™æ­¢
         bossState = 0;
     }
 
-    //bossĞĞ×ß¹ì¼£Í¿É«
+    //bossè¡Œèµ°è½¨è¿¹æ¶‚è‰²
     public void BossWalk()
     {
-        //ÌøÔ¾Ê±²»È¾É«
+        //è·³è·ƒæ—¶ä¸æŸ“è‰²
         if (bossState == 3)
             return;
 
@@ -124,19 +124,19 @@ public class Boss : MonoBehaviour
        
         lineRenderer.SetPosition(
             lineRenderer.positionCount - 1,
-            //ÔÚboss½Åµ×äÖÈ¾
+            //åœ¨bossè„šåº•æ¸²æŸ“
             new Vector3(this.transform.position.x , this.transform.position.y, mapRender.gameTimeCounter));
     }
 
-    //Åç³öµÄ»ğÑæÇòÌå
+    //å–·å‡ºçš„ç«ç„°çƒä½“
     public GameObject fireBallPrefab;
     //
     public float fireBallDrawRadius;
     public void BossFire()
     {
-        //ÔÚboss½Åµ×Éú³É»ğÇò
+        //åœ¨bossè„šåº•ç”Ÿæˆç«çƒ
         GameObject g= Instantiate(fireBallPrefab, this.transform.position, this.transform.rotation);
-        //ÉèÖÃ»ğÇò·½Ïò
+        //è®¾ç½®ç«çƒæ–¹å‘
         g.GetComponent<BossFireBall>().SetInfo(playerTransform.position - this.transform.position, fireBallDrawRadius);
     }
 }

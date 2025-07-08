@@ -12,7 +12,7 @@ public class BossFireBall : MonoBehaviour
     { 
         lineRenderer=MapRender.instance.AddFireBallLineRenderer();
         //lineRenderer = this.GetComponent<LineRenderer>();
-        //Éú³ÉÊ±¸³ÓèµÚÒ»¸öµã
+        //ç”Ÿæˆæ—¶èµ‹äºˆç¬¬ä¸€ä¸ªç‚¹
         lineRenderer.startWidth = drawRadius;
         lineRenderer.endWidth = drawRadius;
         lineRenderer.positionCount += 1;
@@ -23,7 +23,7 @@ public class BossFireBall : MonoBehaviour
     public void FixedUpdate()
     {
         FireBallMove();
-        //Ã¿´ÎÒÆ¶¯Ê±¸üĞÂlineRender
+        //æ¯æ¬¡ç§»åŠ¨æ—¶æ›´æ–°lineRender
         lineRenderer.positionCount += 1;
         lineRenderer.SetPosition(lineRenderer.positionCount - 1,
             new Vector3(this.transform.position.x, this.transform.position.y, MapRender.instance.gameTimeCounter));
@@ -31,11 +31,11 @@ public class BossFireBall : MonoBehaviour
 
     public void FireBallMove()
     {
-        //¸ù¾İ·½ÏòÒÆ¶¯
-        //rayÉäÏß¼ì²âÊÇ·ñÅöµ½Ç½Ìå
+        //æ ¹æ®æ–¹å‘ç§»åŠ¨
+        //rayå°„çº¿æ£€æµ‹æ˜¯å¦ç¢°åˆ°å¢™ä½“
         Vector3 nextpos = this.transform.position + moveDir.normalized * moveSpeed;
-        this.transform.position =new Vector3(nextpos.x,nextpos.y,MapRender.instance.gameTimeCounter-0.1f);//×¢Òâ£¬¿ÉÒÔÊÊµ±µ÷ÕûÏà»úÎ»ÖÃ£¬±ÜÃâÔÚ59.9sÊ±¿´²»¼û»ğÇò£¨´ËÊ±»ğÇòÒÑ¾­Ô½¹ıÁËÏà»úÎ»ÖÃ
-        //±£³Ö»ğÇòµÄÌùÍ¼äÖÈ¾Ê¼ÖÕ¸ßÓÚ¹ì¼£
+        this.transform.position =new Vector3(nextpos.x,nextpos.y,MapRender.instance.gameTimeCounter-0.1f);//æ³¨æ„ï¼Œå¯ä»¥é€‚å½“è°ƒæ•´ç›¸æœºä½ç½®ï¼Œé¿å…åœ¨59.9sæ—¶çœ‹ä¸è§ç«çƒï¼ˆæ­¤æ—¶ç«çƒå·²ç»è¶Šè¿‡äº†ç›¸æœºä½ç½®
+        //ä¿æŒç«çƒçš„è´´å›¾æ¸²æŸ“å§‹ç»ˆé«˜äºè½¨è¿¹
         
     }
 
@@ -52,7 +52,7 @@ public class BossFireBall : MonoBehaviour
         lineRenderer.endWidth = radius;*/
     }
 
-    //test£¬³öÆÁÄ»Ïú»Ù
+    //testï¼Œå‡ºå±å¹•é”€æ¯
     public void OnBecameInvisible()
     {
         Destroy(this.gameObject);

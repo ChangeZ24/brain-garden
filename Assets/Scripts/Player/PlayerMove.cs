@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     /// <summary>
-    /// Íæ¼ÒÒÆ¶¯ËÙ¶È
+    /// ç©å®¶ç§»åŠ¨é€Ÿåº¦
     /// </summary>
     public float moveSpeed;
     private float moveX;
@@ -27,7 +27,7 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
-        #region Íæ¼ÒÒÆ¶¯
+        #region ç©å®¶ç§»åŠ¨
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
         if (moveX<0)
@@ -53,19 +53,19 @@ public class PlayerMove : MonoBehaviour
         transform.position = p;
         #endregion
 
-        #region ÒÆ¶¯¶¯»­²¥·Å
-        //µ±movex»òmoveyÖµ¸Ä±äÊ±£¬¸ü¸ÄÌõ¼ş£¬²¥·Å¶¯»­£¬¿ÉÄÜÊ¹ÓÃ2d»ìºÏ¡£
+        #region ç§»åŠ¨åŠ¨ç”»æ’­æ”¾
+        //å½“movexæˆ–moveyå€¼æ”¹å˜æ—¶ï¼Œæ›´æ”¹æ¡ä»¶ï¼Œæ’­æ”¾åŠ¨ç”»ï¼Œå¯èƒ½ä½¿ç”¨2dæ··åˆã€‚
         playerAnimator.SetFloat("moveX", moveX);
         playerAnimator.SetFloat("moveY", moveY);
         #endregion
 
-        #region Ê¤ÀûÓë·ñÌõ¼şÅĞ¶Ï
+        #region èƒœåˆ©ä¸å¦æ¡ä»¶åˆ¤æ–­
         
         #endregion
     }
 
     /// <summary>
-    /// boss¶ÔÍæ¼ÒÒÆËÙµÄ¼õÉÙ
+    /// bosså¯¹ç©å®¶ç§»é€Ÿçš„å‡å°‘
     /// </summary>
     /// <param name="moveSpeed"></param>
     public void MoveSpeedChange(float speed)

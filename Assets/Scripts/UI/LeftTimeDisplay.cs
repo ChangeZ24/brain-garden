@@ -12,7 +12,7 @@ public class LeftTimeDisplay : MonoBehaviour
     {
         if(MapRender.instance.isGameEnd==false)
         {
-            //游戏中，更新剩余时间显示
+            //娓告垙涓紝鏇存柊鍓╀綑鏃堕棿鏄剧ず
             leftTime = MapRender.instance.gameTimeCounter;
             int t = (int)leftTime;
             timeDisplay.text = (t / 60).ToString("D2") + ":" + (t % 60).ToString("D2");

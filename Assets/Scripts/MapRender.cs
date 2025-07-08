@@ -19,11 +19,11 @@ public class MapRender : MonoBehaviour
 
 
 
-    public float playerAreaRate;//Íæ¼ÒÕ¼¾İÇøÓò±ÈÀı£¬¿ÉÓÃÓÚ¼ÆËãÅĞ±ğÊ¤¸º
+    public float playerAreaRate;//ç©å®¶å æ®åŒºåŸŸæ¯”ä¾‹ï¼Œå¯ç”¨äºè®¡ç®—åˆ¤åˆ«èƒœè´Ÿ
     public int[,] mapData = new int[3200, 1800];
     //
-    public Transform mapLeftDown;//¾ØĞÎµØÍ¼×óÏÂ½ÇÎ»ÖÃ²Î¿¼
-    public Transform mapRightUp;//¾ØĞÎµØÍ¼ÓÒÉÏ½ÇÎ»ÖÃ²Î¿¼
+    public Transform mapLeftDown;//çŸ©å½¢åœ°å›¾å·¦ä¸‹è§’ä½ç½®å‚è€ƒ
+    public Transform mapRightUp;//çŸ©å½¢åœ°å›¾å³ä¸Šè§’ä½ç½®å‚è€ƒ
     public int mapHeight;
     public int mapWidth;
 
@@ -32,21 +32,21 @@ public class MapRender : MonoBehaviour
 
     public List<LineRenderer> fireBallLinesList = new List<LineRenderer>();
 
-    private int totalAreaValue;//ÓÃÓÚ¼ÆËãÇøÓò±ÈÀı
+    private int totalAreaValue;//ç”¨äºè®¡ç®—åŒºåŸŸæ¯”ä¾‹
 
-    //Íæ¼ÒÆğÊ¼Î»ÖÃ£¬ÒÔÆÁÄ»ÖĞĞÄÎª×ø±ê²Î¿¼
+    //ç©å®¶èµ·å§‹ä½ç½®ï¼Œä»¥å±å¹•ä¸­å¿ƒä¸ºåæ ‡å‚è€ƒ
     public int playerStartX;
     public int playerStartY;
 
-    public float gameTimeCounter;//ÓÃÓÚÉèÖÃĞÂºÛ¼£µÄzÖáÎ»ÖÃ--±ØĞëÉèÖÃÓÎÏ·Ê±¼äÔÚÒ»¶¨Ê±¼äÄÚ
+    public float gameTimeCounter;//ç”¨äºè®¾ç½®æ–°ç—•è¿¹çš„zè½´ä½ç½®--å¿…é¡»è®¾ç½®æ¸¸æˆæ—¶é—´åœ¨ä¸€å®šæ—¶é—´å†…
     private void Start()
     {
-        //³õÊ¼ÉèÖÃÎª0
+        //åˆå§‹è®¾ç½®ä¸º0
         /*mapHeight = Mathf.Abs((int)((mapRightUp.position.y-mapLeftDown.position.y)*100));
         mapWidth = Mathf.Abs((int)((mapRightUp.position.x - mapLeftDown.position.x) * 100));*/
         totalAreaValue = 1080000;//mapHeight * mapWidth;
         //
-        gameTimeCounter = 60;//³õÊ¼Î»ÖÃÒªÓë±³¾°³õÊ¼zÎ»ÖÃ£¬Ê±¼ä¶ÔÓ¦,µ±Î»ÖÃÔ½¹ıÉãÏñ»úµÄzÖáÊ±£¬ÏûÊ§
+        gameTimeCounter = 60;//åˆå§‹ä½ç½®è¦ä¸èƒŒæ™¯åˆå§‹zä½ç½®ï¼Œæ—¶é—´å¯¹åº”,å½“ä½ç½®è¶Šè¿‡æ‘„åƒæœºçš„zè½´æ—¶ï¼Œæ¶ˆå¤±
         ResetMap(0);
     }
 
@@ -58,24 +58,24 @@ public class MapRender : MonoBehaviour
         //UpdateTimeDisplay();
         gameTimeCounter -= Time.deltaTime;
         playerAreaRate = (float)playerAreaCount / (float)totalAreaValue;
-        //ÓÎÏ·½áÊø¼ì²â
+        //æ¸¸æˆç»“æŸæ£€æµ‹
         if(gameTimeCounter<=0)
         {
             isGameEnd = true;
-            //Ê±¼ä½áÊø£¬½øĞĞÅĞ¶¨
+            //æ—¶é—´ç»“æŸï¼Œè¿›è¡Œåˆ¤å®š
             if(playerAreaRate<0.3f)
             {
-                //ÉËĞÄ
+                //ä¼¤å¿ƒ
                 GameObject.Find("GameEndUI").GetComponent<GameEndUI>().SetTargetUIActive(2);
             }
             else if(playerAreaRate < 0.6f)
             {
-                //Ò»°ã£¨Æ½¾²£©
+                //ä¸€èˆ¬ï¼ˆå¹³é™ï¼‰
                 GameObject.Find("GameEndUI").GetComponent<GameEndUI>().SetTargetUIActive(1);
             }
             else
             {
-                //¿ªĞÄ
+                //å¼€å¿ƒ
                 GameObject.Find("GameEndUI").GetComponent<GameEndUI>().SetTargetUIActive(0);
             }
         }
@@ -86,17 +86,17 @@ public class MapRender : MonoBehaviour
 
     /*private void UpdateTimeDisplay()
     {
-        //Ê£ÓàÊ±¼äµÄUIÏÔÊ¾
+        //å‰©ä½™æ—¶é—´çš„UIæ˜¾ç¤º
     }*/
 
     public void GameStart()
     {
         isGameEnd = false;
         ResetMap(0);
-        //playerÒÆ¶¯µ½ÆğµãÎ»ÖÃ
+        //playerç§»åŠ¨åˆ°èµ·ç‚¹ä½ç½®
         GameObject.Find("Player").gameObject.transform.position= playerStartPos.position;
         gameTimeCounter = 60;
-        totalAreaValue = 1080000;//²»¾«×¼£¬µ«ÎÊÌâ²»´ó
+        totalAreaValue = 1080000;//ä¸ç²¾å‡†ï¼Œä½†é—®é¢˜ä¸å¤§
         playerAreaRate = 0;
         playerAreaCount = 0;
     }
@@ -111,7 +111,7 @@ public class MapRender : MonoBehaviour
     }
 
     /// <summary>
-    /// Íæ¼ÒÃ¿Ò»Ö¡µ÷ÓÃ,radiusÎªÍæ¼ÒÂ·¾¶¿í¶È
+    /// ç©å®¶æ¯ä¸€å¸§è°ƒç”¨,radiusä¸ºç©å®¶è·¯å¾„å®½åº¦
     /// </summary>
     /// <param name="centerx"></param>
     /// <param name="centery"></param>
@@ -120,15 +120,15 @@ public class MapRender : MonoBehaviour
     {
         /*Debug.Log("X" + centerx + " " + "Y" + centery);
         Debug.Log("MX" + mapWidth + " " + "MY" + mapHeight);*/
-        //¸ù¾İÖĞĞÄ×ø±ê£¬ºÍ°ë¾¶£¬¶ÔÄ¿±êÎ»ÖÃ¸½½üÊı¾İ½øĞĞ´¦Àí
-        //¼ì²â·¶Î§ÄÚÊı¾İ£¬Èç¹ûÊÇ¿Õ°×ÇøÓò£¬¸øÍæ¼ÒÃæ»ı++£¬Èç¹ûÊÇbossÇøÓò£¬ÔòbossÃæ»ı--£¬Èç¹ûÊÇÍæ¼ÒÇøÓò£¬É¶Ò²²»×ö
+        //æ ¹æ®ä¸­å¿ƒåæ ‡ï¼Œå’ŒåŠå¾„ï¼Œå¯¹ç›®æ ‡ä½ç½®é™„è¿‘æ•°æ®è¿›è¡Œå¤„ç†
+        //æ£€æµ‹èŒƒå›´å†…æ•°æ®ï¼Œå¦‚æœæ˜¯ç©ºç™½åŒºåŸŸï¼Œç»™ç©å®¶é¢ç§¯++ï¼Œå¦‚æœæ˜¯bossåŒºåŸŸï¼Œåˆ™bossé¢ç§¯--ï¼Œå¦‚æœæ˜¯ç©å®¶åŒºåŸŸï¼Œå•¥ä¹Ÿä¸åš
         if (centerx < 0 || centerx > mapWidth - 1)
             return;
         if (centery < 0 || centery > mapHeight - 1)
             return;
 
 
-        //Debug.Log("µ±Ç°Íæ¼ÒÈ¾É«Ãæ»ı" + playerAreaCount);
+        //Debug.Log("å½“å‰ç©å®¶æŸ“è‰²é¢ç§¯" + playerAreaCount);
         int leftCheckAreaIndex = (int)Mathf.Max(0, centerx - radius);
         int rightCheckAreaIndex = (int)Mathf.Min(centerx + radius, mapWidth - 1);
         int upIndex = (int)Mathf.Min(centery + radius, mapHeight - 1);
@@ -136,18 +136,18 @@ public class MapRender : MonoBehaviour
         for(int i=leftCheckAreaIndex;i<=rightCheckAreaIndex;i++)
             for(int j = downIndex; j <= upIndex; j++)
             {
-                //¼ì²â¸ÃĞ¡¾ØĞÎ·¶Î§ÄÚµÄµãÊÇ·ñ·ûºÏÌõ¼ş
+                //æ£€æµ‹è¯¥å°çŸ©å½¢èŒƒå›´å†…çš„ç‚¹æ˜¯å¦ç¬¦åˆæ¡ä»¶
                 if (!IsInRadius(centerx, centery, radius, i, j))
                     continue;
-                //¿Õ°×
+                //ç©ºç™½
                 if (mapData[i, j] == 0)
                     playerAreaCount += 1;
-                //Íæ¼ÒÇøÓò
+                //ç©å®¶åŒºåŸŸ
                 else if (mapData[i, j] == 1)
                 {
                     return;
                 }
-                //bossÇøÓò
+                //bossåŒºåŸŸ
                 else if (mapData[i, j] == 2)
                 {
                     playerAreaCount += 1;
@@ -168,9 +168,9 @@ public class MapRender : MonoBehaviour
 
     public void SetPointAsBossArea(int centerx, int centery, float radius)
     {
-        //¸ù¾İÖĞĞÄ×ø±ê£¬ºÍ°ë¾¶£¬¶ÔÄ¿±êÎ»ÖÃ¸½½üÊı¾İ½øĞĞ´¦Àí
+        //æ ¹æ®ä¸­å¿ƒåæ ‡ï¼Œå’ŒåŠå¾„ï¼Œå¯¹ç›®æ ‡ä½ç½®é™„è¿‘æ•°æ®è¿›è¡Œå¤„ç†
 
-        //¼ì²â·¶Î§ÄÚÊı¾İ£¬Èç¹ûÊÇ¿Õ°×ÇøÓò£¬¸øÍæ¼ÒÃæ»ı++£¬Èç¹ûÊÇbossÇøÓò£¬ÔòbossÃæ»ı--£¬Èç¹ûÊÇÍæ¼ÒÇøÓò£¬É¶Ò²²»×ö
+        //æ£€æµ‹èŒƒå›´å†…æ•°æ®ï¼Œå¦‚æœæ˜¯ç©ºç™½åŒºåŸŸï¼Œç»™ç©å®¶é¢ç§¯++ï¼Œå¦‚æœæ˜¯bossåŒºåŸŸï¼Œåˆ™bossé¢ç§¯--ï¼Œå¦‚æœæ˜¯ç©å®¶åŒºåŸŸï¼Œå•¥ä¹Ÿä¸åš
         if (centerx < 0 || centerx > mapWidth - 1)
             return;
         if (centery < 0 || centery > mapHeight - 1)
@@ -182,16 +182,16 @@ public class MapRender : MonoBehaviour
         for (int i = leftCheckAreaIndex; i <= rightCheckAreaIndex; i++)
             for (int j = downIndex; j <= upIndex; j++)
             {
-                //¿Õ°×
+                //ç©ºç™½
                 if (mapData[i, j] == 0)
                     bossAreaCount += 1;
-                //Íæ¼ÒÇøÓò
+                //ç©å®¶åŒºåŸŸ
                 else if (mapData[i, j] == 1)
                 {
                     playerAreaCount -=1;
                     bossAreaCount++;
                 }
-                //bossÇøÓò
+                //bossåŒºåŸŸ
                 else if (mapData[i, j] == 2)
                 {
                     return;
@@ -203,7 +203,7 @@ public class MapRender : MonoBehaviour
     }
 
 
-    //»ğÇò¹¥»÷»æÖÆ¹ì¼£
+    //ç«çƒæ”»å‡»ç»˜åˆ¶è½¨è¿¹
     public GameObject linesRendererPrefab;
     public LineRenderer AddFireBallLineRenderer(/*BossFireBall bfb*/)
     {

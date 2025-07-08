@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         lineRenderer = MapRender.instance.playerLineRenderer;
-        //»æÖÆÏßÌõ
+        //ç»˜åˆ¶çº¿æ¡
         /*lineRenderer.startWidth = drawRadius/100;
         lineRenderer.endWidth = drawRadius / 100;*/
         lineRenderer.startWidth = 0;
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public Vector3 curPosWithZ;
     private void Update()
     {
-        //Èç¹ûµ±Ç°µãÓëÉÏÒ»¸ö²»Í¬,Ìí¼ÓĞÂµã
+        //å¦‚æœå½“å‰ç‚¹ä¸ä¸Šä¸€ä¸ªä¸åŒ,æ·»åŠ æ–°ç‚¹
         if (lineRenderer.positionCount == 0)
         {
             lineRenderer.positionCount += 1;
@@ -35,18 +35,18 @@ public class PlayerController : MonoBehaviour
             curPosWithZ = new Vector3(this.transform.position.x /*+ 6.8f*/, this.transform.position.y/* + 2.5f*/, MapRender.instance.gameTimeCounter);
             lineRenderer.SetPosition(lineRenderer.positionCount - 1, curPosWithZ);
         }
-        //ĞŞ¸ÄµØÍ¼Êı¾İ
+        //ä¿®æ”¹åœ°å›¾æ•°æ®
         MapRender.instance.SetPointAsPlayerArea((int)(this.transform.position.x*100+ MapRender.instance.mapWidth*0.5f), (int)(this.transform.position.y * 100 + MapRender.instance.mapHeight*0.5f), drawRadius);
         Move();
         
 
-        #region ÒÆ¶¯¶¯»­²¥·Å
-        //µ±movex»òmoveyÖµ¸Ä±äÊ±£¬¸ü¸ÄÌõ¼ş£¬²¥·Å¶¯»­£¬¿ÉÄÜÊ¹ÓÃ2d»ìºÏ¡£
+        #region ç§»åŠ¨åŠ¨ç”»æ’­æ”¾
+        //å½“movexæˆ–moveyå€¼æ”¹å˜æ—¶ï¼Œæ›´æ”¹æ¡ä»¶ï¼Œæ’­æ”¾åŠ¨ç”»ï¼Œå¯èƒ½ä½¿ç”¨2dæ··åˆã€‚
         playerAnimator.SetFloat("moveX", moveX);
         playerAnimator.SetFloat("moveY", moveY);
         #endregion
 
-        #region Ê¤ÀûÓë·ñÌõ¼şÅĞ¶Ï
+        #region èƒœåˆ©ä¸å¦æ¡ä»¶åˆ¤æ–­
 
         #endregion
     }
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
 
     private void  Move()
     {
-        #region ÆúÓÃµÄ²âÊÔ´úÂë--ÒÆ¶¯
+        #region å¼ƒç”¨çš„æµ‹è¯•ä»£ç --ç§»åŠ¨
         /*if (Input.GetKey(KeyCode.W))
         {
             this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + Time.fixedDeltaTime,
@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         }*/
         #endregion
 
-        #region Íæ¼ÒÒÆ¶¯
+        #region ç©å®¶ç§»åŠ¨
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
         if (moveX < 0)
@@ -122,10 +122,10 @@ public class PlayerController : MonoBehaviour
         return Mathf.Sqrt(xDis * xDis + yDist * yDist);
     }
 
-    //È«¸øÄãÕ³à¶
+    //å…¨ç»™ä½ ç²˜å–½
 
     /// <summary>
-    /// Íæ¼ÒÒÆ¶¯ËÙ¶È
+    /// ç©å®¶ç§»åŠ¨é€Ÿåº¦
     /// </summary>
     public float moveSpeed;
     private float moveX;
@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviour
     
 
     /// <summary>
-    /// boss¶ÔÍæ¼ÒÒÆËÙµÄ¼õÉÙ
+    /// bosså¯¹ç©å®¶ç§»é€Ÿçš„å‡å°‘
     /// </summary>
     /// <param name="moveSpeed"></param>
     public void MoveSpeedChange(float speed)

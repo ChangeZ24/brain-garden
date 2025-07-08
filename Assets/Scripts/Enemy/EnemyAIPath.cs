@@ -16,7 +16,7 @@ public class EnemyAIPath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region µÐÈËaiÑ°Â·½Ç¶È×ª±ä
+        #region æ•Œäººaiå¯»è·¯è§’åº¦è½¬å˜
         if (aiPath.desiredVelocity.x>=0.01f)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
