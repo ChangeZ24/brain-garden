@@ -69,7 +69,7 @@ Shader "MyShader/guacaipiao"
                /* if (mask == 0)
                     return  fixed4(texcolor.rgb, 0);*/
                 //return fixed4(texcolor.rgb, 1 - mask);
-                if(texcolor.a==0)
+                if(texcolor.a<0.8f)
                     return  fixed4(texcolor.rgb, 0);
                 else
                     return fixed4(texcolor.rgb, 1 - mask);

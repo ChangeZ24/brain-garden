@@ -6,9 +6,7 @@ using UnityEngine;
 public class EnemyAIPath : MonoBehaviour
 {
     public AIPath aiPath;
-    public Sprite forWardSprite;
     private SpriteRenderer EnemySprite;
-    public Sprite backSprite;
     private void Awake()
     {
         EnemySprite = this.GetComponent<SpriteRenderer>();
@@ -24,15 +22,6 @@ public class EnemyAIPath : MonoBehaviour
         else if (aiPath.desiredVelocity.x <= -0.01f)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
-        }
-
-        if (aiPath.desiredVelocity.y >= 0.01f)
-        {
-            EnemySprite.sprite = backSprite;
-        }
-        else if (aiPath.desiredVelocity.y <= -0.01f)
-        {
-            EnemySprite.sprite = forWardSprite;
         }
         #endregion
     }

@@ -42,10 +42,9 @@ public class MapRender : MonoBehaviour
     private void Start()
     {
         //初始设置为0
-        /*mapHeight = Mathf.Abs((int)((mapRightUp.position.y-mapLeftDown.position.y)*100));
-        mapWidth = Mathf.Abs((int)((mapRightUp.position.x - mapLeftDown.position.x) * 100));*/
-        totalAreaValue = 1080000;//mapHeight * mapWidth;
-        //
+        mapHeight = 1800;
+        mapWidth = 3200;
+        totalAreaValue = 1080000;//
         gameTimeCounter = 60;//初始位置要与背景初始z位置，时间对应,当位置越过摄像机的z轴时，消失
         ResetMap(0);
     }
@@ -62,13 +61,15 @@ public class MapRender : MonoBehaviour
         if(gameTimeCounter<=0)
         {
             isGameEnd = true;
+            //暂停游戏时间
+            Time.timeScale = 0;
             //时间结束，进行判定
             if(playerAreaRate<0.3f)
             {
                 //伤心
                 GameObject.Find("GameEndUI").GetComponent<GameEndUI>().SetTargetUIActive(2);
             }
-            else if(playerAreaRate < 0.6f)
+            else if(playerAreaRate < 0.7f)
             {
                 //一般（平静）
                 GameObject.Find("GameEndUI").GetComponent<GameEndUI>().SetTargetUIActive(1);
@@ -83,14 +84,10 @@ public class MapRender : MonoBehaviour
 
     }
 
-
-    /*private void UpdateTimeDisplay()
-    {
-        //剩余时间的UI显示
-    }*/
-
     public void GameStart()
     {
+
+        Time.timeScale = 1;
         isGameEnd = false;
         ResetMap(0);
         //player移动到起点位置
@@ -100,7 +97,6 @@ public class MapRender : MonoBehaviour
         playerAreaRate = 0;
         playerAreaCount = 0;
     }
-
     public void ResetMap(int startData)
     {
         for (int i = 0; i < mapWidth; i++)
@@ -128,6 +124,7 @@ public class MapRender : MonoBehaviour
             return;
 
 
+        //Debug.Log("当前玩家染色面积" + playerAreaCount);
         //Debug.Log("当前玩家染色面积" + playerAreaCount);
         int leftCheckAreaIndex = (int)Mathf.Max(0, centerx - radius);
         int rightCheckAreaIndex = (int)Mathf.Min(centerx + radius, mapWidth - 1);

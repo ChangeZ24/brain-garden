@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -44,3 +45,5 @@ public class PictureEditor : EditorWindow
         AssetDatabase.Refresh();
     }
 }
+
+#endif

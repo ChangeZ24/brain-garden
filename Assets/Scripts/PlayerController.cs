@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     //public MapRender mapRender;
     private LineRenderer lineRenderer;
-
+    public bool isMove;
     public float drawRadius;
+    public AudioSource stopSource;
+    public AudioSource speedSource;
 
     private void Start()
     {
+        MapRender.instance.GameStart();
+        //允许移动
+        isCanMove = true;
+        this.gameObject.transform.position = MapRender.instance.playerStartPos.position;
+
         lineRenderer = MapRender.instance.playerLineRenderer;
         //绘制线条
         /*lineRenderer.startWidth = drawRadius/100;
@@ -22,23 +30,37 @@ public class PlayerController : MonoBehaviour
     public Vector3 curPosWithZ;
     private void Update()
     {
-        //如果当前点与上一个不同,添加新点
-        if (lineRenderer.positionCount == 0)
+
+        if (isMove == false)
         {
-            lineRenderer.positionCount += 1;
-            curPosWithZ = new Vector3(this.transform.position.x/*+6.8f*/, this.transform.position.y/*+2.5f*/, MapRender.instance.gameTimeCounter);
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, curPosWithZ);
+            nowTime += Time.deltaTime;
         }
-        else if (XYDistance(lineRenderer.GetPosition(lineRenderer.positionCount - 1), this.transform.position) > 0.01f)
+        if (nowTime > cantMoveTime)
         {
-            lineRenderer.positionCount += 1;
-            curPosWithZ = new Vector3(this.transform.position.x /*+ 6.8f*/, this.transform.position.y/* + 2.5f*/, MapRender.instance.gameTimeCounter);
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, curPosWithZ);
+            isMove = true;
+            nowTime = 0;
         }
+        //游戏结束，不可在进行交互与移动
+        if (MapRender.instance.isGameEnd)
+            return;
+
         //修改地图数据
-        MapRender.instance.SetPointAsPlayerArea((int)(this.transform.position.x*100+ MapRender.instance.mapWidth*0.5f), (int)(this.transform.position.y * 100 + MapRender.instance.mapHeight*0.5f), drawRadius);
-        Move();
-        
+        MapRender.instance.SetPointAsPlayerArea((int)(this.transform.position.x * 100 + MapRender.instance.mapWidth * 0.5f), (int)(this.transform.position.y * 100 + MapRender.instance.mapHeight * 0.5f), drawRadius);
+
+
+
+        if (isSlow == true && nowSlowTime <= slowTime)
+        {
+            nowSlowTime += Time.deltaTime;
+        }
+        else if (nowSlowTime > slowTime)
+        {
+            nowSlowTime = 0;
+            isSlow = false;
+            MoveSpeedReturn(1.8f);
+        }
+
+
 
         #region 移动动画播放
         //当movex或movey值改变时，更改条件，播放动画，可能使用2d混合。
@@ -49,6 +71,12 @@ public class PlayerController : MonoBehaviour
         #region 胜利与否条件判断
 
         #endregion
+        if (Time.timeScale == 0)
+            return;
+        if (!isCanMove)
+            return;
+
+        Move();
     }
 
     private void FixedUpdate()
@@ -58,6 +86,7 @@ public class PlayerController : MonoBehaviour
 
     //public Transform mainCamera;
 
+    public bool isCanMove;  //用于禁止玩家移动输入
     private void  Move()
     {
         #region 弃用的测试代码--移动
@@ -88,22 +117,25 @@ public class PlayerController : MonoBehaviour
         #region 玩家移动
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
-        if (moveX < 0)
+        if (moveX > 0)
         {
             this.transform.localScale = new Vector3(-1, 1, 1);
+            speedDropBuffDisplay.transform.localScale = new Vector3(-1, 1, 1);
         }
-        else if (moveX > 0)
+        else if (moveX < 0)
         {
             this.transform.localScale = new Vector3(1, 1, 1);
+            speedDropBuffDisplay.transform.localScale = new Vector3(1, 1, 1);
         }
-
-        if (moveY < 0)
+        else if (moveX==0&&moveY==0)
         {
-            PlayerSprite.sprite = forWardSprite;
+            this.transform.localScale = new Vector3(1, 1, 1); 
+            speedDropBuffDisplay.transform.localScale = new Vector3(1, 1, 1);
         }
-        else if (moveY > 0)
+        else if (moveY!=0)
         {
-            PlayerSprite.sprite = backSprite;
+            this.transform.localScale = new Vector3(1, 1, 1);
+            speedDropBuffDisplay.transform.localScale = new Vector3(1, 1, 1);
         }
         Vector2 p = this.transform.position;
         p.x += moveX * moveSpeed * Time.deltaTime;
@@ -111,10 +143,37 @@ public class PlayerController : MonoBehaviour
         transform.position = p;
         #endregion
     }
-    public float XYDistance(Vector3 v1,Vector3 v2)
+    
+    /// <summary>
+    /// 根据传入time，对玩家做出持续时间为time的禁锢效果。
+    /// </summary>
+    private bool hasStopFunc;//确保只进行一次停止移动协程
+    public void StopMoveInput(float time)
     {
-        
-        float xDis = v1.x-v2.x;
+        if (hasStopFunc == true)
+            return;
+        hasStopFunc = true;
+        StartCoroutine(MoveStop(time));
+        //触发一次受击GitGit
+        GetHit();
+    }
+
+    private IEnumerator MoveStop(float t)
+    {
+        if(stopSource != null)
+            stopSource.Play();
+        isCanMove = false;
+        yield return new WaitForSeconds(t);
+        isCanMove = true;
+        hasStopFunc = false;
+    }
+
+
+
+    public float XYDistance(Vector3 v1, Vector3 v2)
+    {
+
+        float xDis = v1.x - v2.x;
         float yDist = v1.y - v2.y;
         /*Debug.Log("v1" + v1);
         Debug.Log("V2" + v2);
@@ -122,24 +181,37 @@ public class PlayerController : MonoBehaviour
         return Mathf.Sqrt(xDis * xDis + yDist * yDist);
     }
 
+    public void GetHit()
+    {
+        //红光闪烁
+        GameObject.Find("ScreenBorder").GetComponent<ScreenBorder>().DoFlashOnce();
+    }
+
+
     //全给你粘喽
 
     /// <summary>
     /// 玩家移动速度
     /// </summary>
     public float moveSpeed;
-    private float moveX;
-    private float moveY;
+    public float moveX;
+    public float moveY;
+    public float cantMoveTime;
+    public float nowTime;
+    private bool isSlow;
+    public float slowTime;
+    private float nowSlowTime;
     private Animator playerAnimator;
     private SpriteRenderer PlayerSprite;
-    public Sprite forWardSprite;
-    public Sprite backSprite;
     private void Awake()
     {
         playerAnimator = this.GetComponent<Animator>();
         PlayerSprite = this.GetComponent<SpriteRenderer>();
+        SoundManager.instance.BgAudio();
     }
-    
+
+
+    public GameObject speedDropBuffDisplay;
 
     /// <summary>
     /// boss对玩家移速的减少
@@ -147,18 +219,17 @@ public class PlayerController : MonoBehaviour
     /// <param name="moveSpeed"></param>
     public void MoveSpeedChange(float speed)
     {
+        GetHit();
+        //头顶显示减速
+        speedDropBuffDisplay.SetActive(true);
+        speedSource.Play();
         this.moveSpeed -= speed;
+        isSlow = true;
     }
     public void MoveSpeedReturn(float moveSpeed)
     {
-        this.moveSpeed = moveSpeed;
+        //头顶关闭减速
+        speedDropBuffDisplay.SetActive(false);
+        this.moveSpeed += moveSpeed;
     }
-
-
-
-
-
-
-
-
 }

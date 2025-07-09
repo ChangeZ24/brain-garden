@@ -1,3 +1,4 @@
+// 注意：该脚本目前可能未被项目使用，仅供后续确认或参考。
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
